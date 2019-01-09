@@ -1,0 +1,25 @@
+version: "3.3"
+services:
+  srmtestapp:
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - srmtestdb:db
+    depends_on:
+      - srmtestdb
+    environment:
+      WAIT_HOSTS: db:3306
+  srmtestdb:
+    build:
+      context: .
+      dockerfile: DockerfileMySQL
+    environment:
+      MYSQL_DATABASE: srmtest
+      MYSQL_USER: srmtest
+      MYSQL_PASSWORD: srmtest
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_HOST: '%'
+    volumes:
+      - ./mysqldata:/var/lib/mysql:rw,delegated
